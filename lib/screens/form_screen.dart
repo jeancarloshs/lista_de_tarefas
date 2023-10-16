@@ -56,6 +56,7 @@ class _FormScreenState extends State<FormScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(), // QUANDO CLICADO FORA DO FORM, O TECLADO É FECHADO AUTOMATICAMENTE
                       controller: nameController,
                       keyboardType: TextInputType.text,
                       validator: (String? value) {
@@ -76,6 +77,7 @@ class _FormScreenState extends State<FormScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       controller: difficultyController,
                       keyboardType: TextInputType.number,
                       validator: ((value) {
@@ -98,6 +100,7 @@ class _FormScreenState extends State<FormScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       controller: imageController,
                       keyboardType: TextInputType.url,
                       validator: (value) {
