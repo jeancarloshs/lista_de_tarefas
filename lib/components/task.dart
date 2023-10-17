@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lista_de_tarefas/components/difficulty.dart';
+import 'package:lista_de_tarefas/data/task_dao.dart';
 
 class Task extends StatefulWidget {
   final String nome;
@@ -14,7 +15,6 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-
   bool assetOrNetwork() {
     if (widget.foto.contains('http')) {
       return false;
@@ -85,6 +85,55 @@ class _TaskState extends State<Task> {
                           width: 70,
                           height: 70,
                           child: ElevatedButton(
+                            onLongPress: () {
+                              showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Deletar'),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height / 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Deletar',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Icon(Icons.delete_forever, size: 30),
+                    ],
+                  ),
+                  const Text('Tem certeza que deseja deletar essa Tarefa?', style: TextStyle(fontSize: 20),),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Não', style: TextStyle(fontSize: 18),),
+                      ),
+                      // const SizedBox(width: 2,),
+                      TextButton(
+                        onPressed: () {
+                          TaskDao().delete(widget.nome);
+                          Navigator.pop(context); // Fecha o AlertDialog após a ação.
+                        },
+                        child: const Text('Sim', style: TextStyle(fontSize: 18),),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );});
+                            },
                             onPressed: () {
                               setState(() {
                                 widget.nivel++;

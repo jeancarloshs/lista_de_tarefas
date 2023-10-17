@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lista_de_tarefas/components/task.dart';
+import 'package:lista_de_tarefas/data/task_dao.dart';
 import 'package:lista_de_tarefas/data/task_inherited.dart';
 
 class FormScreen extends StatefulWidget {
@@ -56,7 +58,8 @@ class _FormScreenState extends State<FormScreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(), // QUANDO CLICADO FORA DO FORM, O TECLADO É FECHADO AUTOMATICAMENTE
+                      onTapOutside: (event) => FocusScope.of(context)
+                          .unfocus(), // QUANDO CLICADO FORA DO FORM, O TECLADO É FECHADO AUTOMATICAMENTE
                       controller: nameController,
                       keyboardType: TextInputType.text,
                       validator: (String? value) {
@@ -142,10 +145,11 @@ class _FormScreenState extends State<FormScreen> {
                   ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          TaskInherited.of(widget.taskContext)?.newTask(
-                              nameController.text,
-                              imageController.text,
-                              int.parse(difficultyController.text));
+                          TaskDao().save(Task(
+                            nameController.text,
+                            imageController.text,
+                            int.parse(difficultyController.text),
+                          ));
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Salvando nova Tarefa!')));

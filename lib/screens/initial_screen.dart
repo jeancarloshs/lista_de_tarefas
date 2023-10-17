@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:lista_de_tarefas/components/task.dart';
 import 'package:lista_de_tarefas/data/task_dao.dart';
@@ -17,7 +19,14 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        leading: Container(),
+        actions: [
+          IconButton(onPressed: () {
+            setState(() {
+              
+            });
+          }, icon: const Icon(Icons.refresh))
+        ],
         title: const Text('Tarefas'),
       ),
       body: Padding(
@@ -28,14 +37,35 @@ class _InitialScreenState extends State<InitialScreen> {
             List<Task>? items = snapshot.data;
             switch (snapshot.connectionState) {
               case ConnectionState.none:
-                // TODO: Handle this case.
-                break;
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      Text('Loading...'),
+                    ],
+                  ),
+                );
               case ConnectionState.waiting:
-                // TODO: Handle this case.
-                break;
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      Text('Loading...'),
+                    ],
+                  ),
+                );
               case ConnectionState.active:
-                // TODO: Handle this case.
-                break;
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      Text('Loading...'),
+                    ],
+                  ),
+                );
               case ConnectionState.done:
                 if (snapshot.hasData && items != null) {
                   if (items.isNotEmpty) {
@@ -49,8 +79,12 @@ class _InitialScreenState extends State<InitialScreen> {
                   }
                   return const Center(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.error_outline),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Icon(Icons.error_outline),
+                        ),
                         Text(
                           'Não há nenhuma Tarefa!!!',
                           style: TextStyle(fontSize: 22),
@@ -75,7 +109,9 @@ class _InitialScreenState extends State<InitialScreen> {
                 taskContext: context,
               ),
             ),
-          );
+          ).then((value) => setState(() {
+            print('Recarregando a tela inicial');
+          }));
         },
         child: const Icon(Icons.add),
       ),
